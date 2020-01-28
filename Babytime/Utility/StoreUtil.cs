@@ -39,4 +39,31 @@ namespace babytime.Utility
             editor.Apply();
         }
     }
+
+    public static class StoreUtil
+    {
+        private static SimpleStorage _simpleStorage = new SimpleStorage();
+
+        public static bool GetBool(string key)
+        {
+            return _simpleStorage.GetBool(key);
+        }
+        public static void SaveBool(string key, bool value)
+        {
+            _simpleStorage.SaveBool(key, value);
+        }
+        public static string GetString(string key)
+        {
+            return _simpleStorage.GetString(key);
+        }
+        public static void SaveString(string key, string value)
+        {
+            _simpleStorage.SaveString(key, value);
+
+        }
+        public static void RemoveObject(string key)
+        {
+            _simpleStorage.RemoveObject(key);
+        }
+    }
 }

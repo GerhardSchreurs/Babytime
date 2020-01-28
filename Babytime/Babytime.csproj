@@ -63,9 +63,8 @@
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\FirebaseMessagingService.cs" />
-    <Compile Include="Model\FCMBody.cs" />
-    <Compile Include="Utility\SimpleStorage.cs" />
-    <Compile Include="Utility\TokenUtil.cs" />
+    <Compile Include="Utility\StoreUtil.cs" />
+    <Compile Include="Utility\Settings.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Utility\FCMPushNotification.cs" />
     <Compile Include="GoogleSettings.cs" />

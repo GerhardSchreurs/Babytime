@@ -1,6 +1,5 @@
 ﻿using System;
 using Android.App;
-using Firebase.Iid;
 using Android.Util;
 using Firebase.Messaging;
 using Android.Content;
@@ -9,7 +8,6 @@ using Android.Media;
 using Android.Support.V4.App;
 using Android.Support.V4.Content;
 using Android.Annotation;
-using Android.Runtime;
 
 namespace babytime.Services
 {
@@ -18,13 +16,13 @@ namespace babytime.Services
     public class FirebaseMessagingService : Firebase.Messaging.FirebaseMessagingService
     {
         const string TAG = "FirebaseMessagingService";
-        const string SUBSCRIBE_TO = "babytime";
+        const string TOPIC = "babytime";
         const string ADMIN_CHANNEL_ID = "admin_channel";
 
         public override void OnNewToken(string token)
         {
             base.OnNewToken(token);
-            FirebaseMessaging.Instance.SubscribeToTopic(SUBSCRIBE_TO);
+            FirebaseMessaging.Instance.SubscribeToTopic(TOPIC);
             Log.Info(TAG, "OnNewToken " + token);
         }
 
@@ -42,8 +40,8 @@ namespace babytime.Services
             }
 
             intent.AddFlags(ActivityFlags.ClearTop);
-            var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
 
+            var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
             var largeIcon = BitmapFactory.DecodeResource(Resources, Resource.Mipmap.ic_launcher);
             var notificationSoundUri = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
             var notificationBuilder = new NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
@@ -79,11 +77,6 @@ namespace babytime.Services
             {
                 notificationManager.CreateNotificationChannel(adminChannel);
             }
-        }
-
-        void SendRegistrationToServer(string token)
-        {
-            // Add custom implementation, as needed.
         }
     }
 }
