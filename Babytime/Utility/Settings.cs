@@ -1,10 +1,16 @@
 ﻿using System;
+using Xamarin.Essentials;
+
 namespace babytime.Utility
 {
     public static class Settings
     {
         const string TOKEN = "TOKEN";
-        const string ISPUSHAPP = "ISPUSHAPP";
+        const string ISMOMMYAPP = "ISMOMMYAPP";
+        const string MINORVERSION = "MINORVERSION";
+        const string ALARMHOUR = "ALARMHOUR";
+        const string ALARMMINUTE = "ALARMMINUTE";
+
 
         public static string GetToken()
         {
@@ -16,14 +22,49 @@ namespace babytime.Utility
             StoreUtil.SaveString(TOKEN, token);
         }
 
-        public static bool GetIsPushApp()
+        public static bool GetIsMommyApp()
         {
-            return StoreUtil.GetBool(ISPUSHAPP);
+            return StoreUtil.GetBool(ISMOMMYAPP);
         }
 
-        public static void SetIsPushApp(bool value)
+        public static void SetIsMommyApp(bool value)
         {
-            StoreUtil.SaveBool(ISPUSHAPP, value);
+            StoreUtil.SaveBool(ISMOMMYAPP, value);
+        }
+
+        public static bool IsNewVersionAndStore()
+        {
+            var buildVersion = AppInfo.Version.Minor;
+            var storedVersion = StoreUtil.GetInt(MINORVERSION);
+            var isNewVersion = false;
+
+            if ((storedVersion == -1) || (buildVersion != storedVersion))
+            {
+                isNewVersion = true;
+            }
+
+            if (isNewVersion)
+            {
+                StoreUtil.SaveInt(MINORVERSION, AppInfo.Version.Minor);
+            }
+
+            return isNewVersion;
+        }
+
+        public static int GetAlarmHour()
+        {
+            return StoreUtil.GetInt(ALARMHOUR, -1);
+        }
+
+        public static int GetAlarmMinute()
+        {
+            return StoreUtil.GetInt(ALARMMINUTE, -1);
+        }
+
+        public static void SetAlarmTime(int hour, int minute)
+        {
+            StoreUtil.SaveInt(ALARMHOUR, hour);
+            StoreUtil.SaveInt(ALARMMINUTE, minute);
         }
     }
 }
