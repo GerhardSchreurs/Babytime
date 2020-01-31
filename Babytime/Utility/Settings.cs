@@ -10,7 +10,7 @@ namespace babytime.Utility
         const string MINORVERSION = "MINORVERSION";
         const string ALARMHOUR = "ALARMHOUR";
         const string ALARMMINUTE = "ALARMMINUTE";
-
+        const string ISALARMACTIVE = "ISALARMACTIVE";
 
         public static string GetToken()
         {
@@ -50,6 +50,19 @@ namespace babytime.Utility
 
             return isNewVersion;
         }
+
+        public static bool IsAlarmActive
+        {
+            get
+            {
+                return StoreUtil.GetBool(ISALARMACTIVE);
+            }
+            set
+            {
+                StoreUtil.SaveBool(ISALARMACTIVE, value);
+            }
+        }
+
 
         public static int GetAlarmHour()
         {

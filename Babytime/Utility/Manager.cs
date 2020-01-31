@@ -40,7 +40,7 @@ namespace babytime.Utility
 
         private void Init()
         {
-            context = AndroidApplication.Instance.ApplicationContext;
+            context = Application.Context.ApplicationContext;
         }
 
         private void InitAlarm()
@@ -62,9 +62,9 @@ namespace babytime.Utility
             _ringtone= RingtoneManager.GetRingtone(context, alarmUri);
         }
 
-        private void ClearAlarm()
+        public void ClearAlarm()
         {
-            Settings.ClearAlarm();
+            Settings.IsAlarmActive = false;
 
             if (_alarmPendingIntent != null)
             {
@@ -72,7 +72,7 @@ namespace babytime.Utility
             }
         }
 
-        private void SetAlarm(int hourOfDay, int minute)
+        public void SetAlarm(int hourOfDay, int minute)
         {
             Settings.SetAlarmTime(hourOfDay, minute);
 
@@ -82,6 +82,8 @@ namespace babytime.Utility
             calendar.Set(CalendarField.Second, 0);
 
             _alarmManager.SetExact(AlarmType.RtcWakeup, calendar.TimeInMillis, _alarmPendingIntent);
+
+            Settings.IsAlarmActive = true;
         }
 
         public void PlayAlarm()
@@ -103,6 +105,7 @@ namespace babytime.Utility
         {
             _ringtone.Stop();
             IsAlarmGoingOf = false;
+            Settings.IsAlarmActive = false;
         }
     }
 }

@@ -49,7 +49,6 @@ namespace babytime
         public void WT(string arg1, string arg2)
         {
             System.Diagnostics.Debug.WriteLine(TAG + ":: " + arg1 + " - " + arg2);
-            ApplicationContext.
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -70,7 +69,7 @@ namespace babytime
             _buttonStop = FindViewById<Button>(Resource.Id.buttonStop);
 
             SetSupportActionBar(_toolbar);
-            InitClock(); //TODO: Set again after update
+            InitClock();
         }
 
         private void InitClock()
@@ -129,6 +128,7 @@ namespace babytime
         {
             _linearLayoutClockSettings.Visibility = ViewStates.Visible;
             _linearLayoutClockIsRinging.Visibility = ViewStates.Gone;
+            _switchAlarm.Checked = Settings.IsAlarmActive;
         }
 
         protected override void OnPause()
@@ -154,66 +154,16 @@ namespace babytime
             ShowAlarmView();
         }
 
-        void SetAlarmTest()
-        {
-            var alarmIntent = new Intent(this, typeof(AlarmReceiver));
-            var pendingIntent = PendingIntent.GetBroadcast(this, 1, alarmIntent, PendingIntentFlags.UpdateCurrent);
-            //var date = DateTime.Now.AddSeconds(60);
-
-            var calendar = Calendar.Instance;
-            calendar.Set(CalendarField.HourOfDay, DateTime.Now.Hour);
-            calendar.Set(CalendarField.Minute, DateTime.Now.Minute + 1);
-
-            _alarmManager.SetExact(AlarmType.RtcWakeup, calendar.TimeInMillis, pendingIntent);
-        }
-
-        void SetAlarm()
-        {
-            var calendar = Calendar.Instance;
-            calendar.Set(CalendarField.HourOfDay, _alarmHour);
-            calendar.Set(CalendarField.Minute, _alarmMinute);
-            calendar.Set(CalendarField.Second, 0);
-
-            var alarmIntent = new Intent(this, typeof(AlarmReceiver));
-            var pendingIntent = PendingIntent.GetBroadcast(this, 1, alarmIntent, PendingIntentFlags.UpdateCurrent);
-            _alarmManager.SetExact(AlarmType.RtcWakeup, calendar.TimeInMillis, pendingIntent);
-        }
-
-
-        void CancelAlarm()
-        {
-            var alarmIntent = new Intent(this, typeof(AlarmReceiver));
-            var pendingIntent = PendingIntent.GetBroadcast(this, 1, alarmIntent, PendingIntentFlags.UpdateCurrent);
-            _alarmManager.Cancel(pendingIntent);
-        }
-
         private void Handle_switchAlarm_Click(object sender, EventArgs e)
         {
             if (_switchAlarm.Checked)
             {
-                SetAlarmTest();
-
-                //var calendar = Calendar.Instance;
-                //calendar.Set(CalendarField.HourOfDay, _alarmHour);
-                //calendar.Set(CalendarField.Minute, _alarmMinute);
-
-                //var alarmIntent = new Intent(this, typeof(AlarmReceiver));
-                //var pendingIntent = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
-                //var date = DateTime.Now;
-                //date.AddMilliseconds(3000);
-                //_alarmManager.Set(AlarmType.Rtc, date.Millisecond, pendingIntent);
-
-                //Intent myIntent = new Intent(AlarmActivity.this, AlarmReceiver.class);
-                //pendingIntent = PendingIntent.getBroadcast(AlarmActivity.this, 0, myIntent, 0);
-                //alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+                Manager.Instance.SetAlarm(_alarmHour, _alarmMinute);
             }
             else
             {
-                CancelAlarm();
-                //TODO
-                //_alarmManager.Cancel(this);
+                Manager.Instance.ClearAlarm();
             }
-
         }
 
 
@@ -248,17 +198,10 @@ namespace babytime
 
         public void OnTimeSet(TimePicker view, int hourOfDay, int minute)
         {
-            Utility.Settings.SetAlarmTime(hourOfDay, minute);
+            Manager.Instance.ClearAlarm();
+            Manager.Instance.SetAlarm(hourOfDay, minute);
+            _switchAlarm.Checked = true;
             InitClock();
-
-            CancelAlarm();
-
-            if (_switchAlarm.Checked == false)
-            {
-                _switchAlarm.Checked = true;
-            }
-
-            SetAlarmTest();
         }
     }
 }
