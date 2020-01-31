@@ -66,5 +66,11 @@ namespace babytime.Utility
             StoreUtil.SaveInt(ALARMHOUR, hour);
             StoreUtil.SaveInt(ALARMMINUTE, minute);
         }
+
+        public static void ClearAlarm()
+        {
+            StoreUtil.RemoveObject(ALARMHOUR);
+            StoreUtil.RemoveObject(ALARMMINUTE);
+        }
     }
 }
