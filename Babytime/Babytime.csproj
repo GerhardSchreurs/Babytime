@@ -72,10 +72,10 @@
     <Compile Include="SettingsActivity.cs" />
     <Compile Include="DaddyActivity.cs" />
     <Compile Include="Services\AlarmReceiver.cs" />
-    <Compile Include="Services\AlarmService.cs" />
     <Compile Include="Utility\Manager.cs" />
     <Compile Include="Utility\EventController.cs" />
     <Compile Include="AndroidApplication.cs" />
+    <Compile Include="Services\BootReceiver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

@@ -72,9 +72,21 @@ namespace babytime.Utility
             }
         }
 
-        public void SetAlarm(int hourOfDay, int minute)
+        public void SetAlarmOnBoot()
         {
-            Settings.SetAlarmTime(hourOfDay, minute);
+            if (Settings.IsAlarmActive)
+            {
+                SetAlarm(Settings.GetAlarmHour(), Settings.GetAlarmMinute(), false);
+            }
+        }
+
+        public void SetAlarm(int hourOfDay, int minute, bool store = true)
+        {
+            if (store)
+            {
+                Settings.SetAlarmTime(hourOfDay, minute);
+                Settings.IsAlarmActive = true;
+            }
 
             var calendar = Calendar.Instance;
             calendar.Set(CalendarField.HourOfDay, hourOfDay);
@@ -82,8 +94,6 @@ namespace babytime.Utility
             calendar.Set(CalendarField.Second, 0);
 
             _alarmManager.SetExact(AlarmType.RtcWakeup, calendar.TimeInMillis, _alarmPendingIntent);
-
-            Settings.IsAlarmActive = true;
         }
 
         public void PlayAlarm()
