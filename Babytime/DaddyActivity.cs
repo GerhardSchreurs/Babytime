@@ -1,18 +1,13 @@
 ﻿
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
-using Android.Icu.Util;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
-using babytime.Services;
 using babytime.Utility;
 using static Android.App.TimePickerDialog;
 
@@ -74,8 +69,8 @@ namespace babytime
 
         private void InitClock()
         {
-            _alarmHour = Utility.Settings.GetAlarmHour();
-            _alarmMinute = Utility.Settings.GetAlarmMinute();
+            _alarmHour = Settings.GetAlarmHour();
+            _alarmMinute = Settings.GetAlarmMinute();
 
             if (_alarmHour == -1 || _alarmMinute == -1)
             {
@@ -145,12 +140,18 @@ namespace babytime
 
         private void Handle_ButtonStop_Click(object sender, EventArgs e)
         {
+            _buttonStop.SetTextColor(Color.DarkRed);
             Manager.Instance.StopAlarm();
             ShowSettingsView();
         }
 
-        private void HandleEventController_AlarmIsRinging(object sender, EventArgs e)
+        private void HandleEventController_AlarmIsRinging(object sender, AlarmEventArgs e)
         {
+            if (e.FromMommy)
+            {
+                _buttonStop.SetTextColor(Color.Purple);
+            }
+
             ShowAlarmView();
         }
 
@@ -171,7 +172,6 @@ namespace babytime
         {
             var timePicker = new TimePickerDialog(this, this, _alarmHour, _alarmMinute, true);
             timePicker.Show();
-
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

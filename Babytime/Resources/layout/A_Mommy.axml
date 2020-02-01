@@ -4,13 +4,51 @@
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:padding="20dp" >
-	<TextView
-		android:text="MOMMY"
-		android:textAppearance="?android:attr/textAppearanceSmall"
+	android:padding="0dp" >
+
+    <include
+		android:id="@+id/toolbar"
+		layout="@menu/T_Main" />
+
+	<LinearLayout
+		android:id="@+id/linearLayoutMommy"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:minWidth="25px"
-		android:minHeight="25px"
-		android:id="@+id/textView1" />
+		android:orientation="vertical"
+		android:padding="20dp">
+		<ImageButton
+            android:background="@null"
+            android:layout_marginTop="80dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/redbuttondrawable"
+            android:scaleType="fitXY"
+			android:layout_width="300dp"
+			android:layout_height="242dp"
+			android:minWidth="25px"
+			android:minHeight="25px"
+			android:id="@+id/imageButtonAlarm"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="WARNING!"
+            android:textColor="@android:color/black"
+            android:textAlignment="center"
+            android:textSize="30dp"
+            android:layout_marginTop="30dp"
+            />
+        <TextView
+            android:id="@+id/textViewWarningDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="WARNING!"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            />
+
+
+	</LinearLayout>
 </LinearLayout>

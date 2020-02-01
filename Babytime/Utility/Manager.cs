@@ -35,6 +35,7 @@ namespace babytime.Utility
         private Ringtone _ringtone;
         private AlarmManager _alarmManager;
         private PendingIntent _alarmPendingIntent;
+        private FCMPushNotification _FCMPushNotification;
 
         public bool IsAlarmGoingOf;
 
@@ -96,16 +97,21 @@ namespace babytime.Utility
             _alarmManager.SetExact(AlarmType.RtcWakeup, calendar.TimeInMillis, _alarmPendingIntent);
         }
 
-        public void PlayAlarm()
+        public void PlayAlarm(bool fromMummy = false)
         {
             if (IsAlarmGoingOf == false)
             {
+                if (fromMummy)
+                {
+                    ClearAlarm();
+                }
+
                 var launchIntent = context.PackageManager.GetLaunchIntentForPackage(context.PackageName);
                 launchIntent.SetFlags(ActivityFlags.ReorderToFront | ActivityFlags.NewTask | ActivityFlags.ResetTaskIfNeeded);
                 context.StartActivity(launchIntent);
 
                 _ringtone.Play();
-                EventController.RaiseAlarmIsRinging(this);
+                EventController.RaiseAlarmIsRinging(this, fromMummy);
             }
 
             IsAlarmGoingOf = true;
@@ -116,6 +122,16 @@ namespace babytime.Utility
             _ringtone.Stop();
             IsAlarmGoingOf = false;
             Settings.IsAlarmActive = false;
+        }
+
+        public void SendNotification()
+        {
+            if (_FCMPushNotification == null)
+            {
+                _FCMPushNotification = new FCMPushNotification();
+            }
+
+            _FCMPushNotification.SendNotification("title", "message", "babytime");
         }
     }
 }
